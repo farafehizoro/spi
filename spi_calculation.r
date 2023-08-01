@@ -2,7 +2,8 @@
 # Author: Farafehizoro
 # Date : august 01st, 2023
 
-
+library(fitdistrplus)
+library(zoo)
 
 spi_gamma <- function(rain, ref_dat) #calculate SPI based on a gamma distribtion
 {
