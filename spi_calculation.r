@@ -21,3 +21,20 @@ spi_gamma <- function(rain, ref_dat) #calculate SPI based on a gamma distribtion
 	return (spi_res)
 }
 
+
+spi_month <- function (dat, method , start_year, end_year= NULL, start_ref = NULL, end_ref= NULL, return_last_value = FALSE)
+{
+	if (is.null(end_year)) end_year = length(dat) + start_year - 1
+	if (is.null(start_ref)) start_ref = start_year
+	if (is.null(end_ref)) end_ref = end_year
+	#if (start_ref>= end_ref) print("error") #mbola ampidirina code mamoaka error sy manapaka ny script eto
+	ref_year_name <- sapply(start_ref: end_ref, toString)
+	ref_dat <- dat[ref_year_name]
+	res <- spi_gamma(dat, ref_dat)
+	if(return_last_value){
+		return(tail(res,1))
+	}
+	else{
+		return (res)
+	}
+}
