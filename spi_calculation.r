@@ -7,7 +7,9 @@ library(zoo)
 
 spi_gamma <- function(rain, ref_dat) #calculate SPI based on a gamma distribtion
 {
+	
 	#param <- fitdist(ref_dat,distr = "gamma")
+	ref_dat <- as.vector(ref_dat)
 	ref_dat2 <- ref_dat[which( !is.na(ref_dat))]
 	pzero <- sum (ref_dat2 == 0) / length(ref_dat2)
 	ref_dat2_nozero <- ref_dat2[ref_dat2 > 0]
@@ -30,6 +32,13 @@ spi_month <- function (dat, start_year, end_year= NULL, start_ref = NULL, end_re
 	if (is.null(start_ref)) start_ref = start_year
 	if (is.null(end_ref)) end_ref = end_year
 	#if (start_ref>= end_ref) print("error") #mbola ampidirina code mamoaka error sy manapaka ny script eto
+	
+	if (is.null(rownames(dat)))
+		{
+		dim(dat) <- length(dat)
+		rownames(dat) <- start_year:end_year
+		}
+	
 	ref_year_name <- sapply(start_ref: end_ref, toString)
 	ref_dat <- dat[ref_year_name]
 	res <- spi_gamma(dat, ref_dat)
