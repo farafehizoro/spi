@@ -3,6 +3,7 @@
 # Date : august 01st, 2023
 
 
+
 spi_gamma <- function(rain, ref_dat) #calculate SPI based on a gamma distribtion
 {
 	#param <- fitdist(ref_dat,distr = "gamma")
@@ -22,7 +23,7 @@ spi_gamma <- function(rain, ref_dat) #calculate SPI based on a gamma distribtion
 }
 
 
-spi_month <- function (dat, method , start_year, end_year= NULL, start_ref = NULL, end_ref= NULL, return_last_value = FALSE)
+spi_month <- function (dat, start_year, end_year= NULL, start_ref = NULL, end_ref= NULL, return_last_value = FALSE)
 {
 	if (is.null(end_year)) end_year = length(dat) + start_year - 1
 	if (is.null(start_ref)) start_ref = start_year
@@ -41,7 +42,7 @@ spi_month <- function (dat, method , start_year, end_year= NULL, start_ref = NUL
 
 
 
-spi_all <- function (dat, start_year, start_month = 1,time_scale = 1, method = "Gamma" , start_ref=NULL, end_ref= NULL, asMatrix = TRUE )
+spi_all <- function (dat, start_year, start_month = 1,time_scale = 1, start_ref=NULL, end_ref= NULL, asMatrix = TRUE )
 {
 	#prepare dataset 
 		#fill month before and after
@@ -65,8 +66,8 @@ spi_all <- function (dat, start_year, start_month = 1,time_scale = 1, method = "
 	res[] <- NA
 	for (i in 1:12)
 	{
-		print(i)
-		res[,i] <- spi_month(mat[,i], method, start_year, end_year, start_ref, end_ref)
+		
+		res[,i] <- spi_month(mat[,i], start_year, end_year, start_ref, end_ref)
 	}
 	if (asMatrix) return (res)
 	else{
@@ -75,7 +76,6 @@ spi_all <- function (dat, start_year, start_month = 1,time_scale = 1, method = "
 	{	
 			to_drop_bef <- -1 * (1: length(fill_before))
 			res <- res[to_drop_bef]
-			print(fill_before)
 		}
 		if(length(fill_after)> 0){
 			res <- res[1 : length(dat)]
