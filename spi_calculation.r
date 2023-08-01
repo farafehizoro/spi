@@ -38,3 +38,50 @@ spi_month <- function (dat, method , start_year, end_year= NULL, start_ref = NUL
 		return (res)
 	}
 }
+
+
+
+spi_all <- function (dat, start_year, start_month = 1,time_scale = 1, method = "Gamma" , start_ref=NULL, end_ref= NULL, asMatrix = TRUE )
+{
+	#prepare dataset 
+		#fill month before and after
+		fill_before <- rep(NA, (start_month - 1))
+		dat2 <- c(fill_before, dat) # data starting from january
+		left <- 12 - length(dat) %% 12
+		fill_after <- rep(NA, left)
+		dat3 <- c(dat2, fill_after)
+		# rolling sum base on time_scale and adjust data
+		dat4 <- rollsum(dat3, time_scale)
+		# fill data after rolling sum
+		fill_rollsum <- rep(NA, (time_scale - 1))
+		dat_tot<- c(fill_rollsum, dat4)
+		# format into matrix
+		mat <- matrix(dat_tot, ncol=12, byrow= TRUE)
+		end_year <- start_year + nrow(mat) - 1
+		row.names(mat) <- start_year:end_year
+		
+	# calculate spi per month
+	res <- mat
+	res[] <- NA
+	for (i in 1:12)
+	{
+		print(i)
+		res[,i] <- spi_month(mat[,i], method, start_year, end_year, start_ref, end_ref)
+	}
+	if (asMatrix) return (res)
+	else{
+	res <- t(res)
+	if (length(fill_before) > 0) 
+	{	
+			to_drop_bef <- -1 * (1: length(fill_before))
+			res <- res[to_drop_bef]
+			print(fill_before)
+		}
+		if(length(fill_after)> 0){
+			res <- res[1 : length(dat)]
+		}	
+		return (res)
+	}
+}
+
+
