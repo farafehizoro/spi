@@ -1,4 +1,4 @@
-# Water requirement satisfaction index (WRSI) calculator
+# Standardized precipitation index
 ```
 spi_res <- spi_all(data, start_year=1981, start_month=2, time_scale = 3, asMatrix = TRUE) # calculate spi for all data with result in matrix format
 spi_res <- spi_all(data, start_year=1981, start_month=2, time_scale = 3, asMatrix = FALSE) # calculate spi for all data with result in vector format
